@@ -2,7 +2,7 @@
 
 **Version:** 1.0.0
 
-TODO: BUILD STATUS
+[![Build Status](https://dev.azure.com/osieng/engineering/_apis/build/status/product-readiness/OCS/osisoft.sample-ocs-assets-python?branchName=main)](https://dev.azure.com/osieng/engineering/_build/latest?definitionId=3402&branchName=main)
 
 Developed against Python 3.9.1.
 
