@@ -87,10 +87,10 @@ class WaveData:
     def Tanh(self, value: float):
         self._tanh = value
 
-    def to_json(self):
-        return json.dumps(self.to_dictionary())
+    def toJson(self):
+        return json.dumps(self.toDictionary())
 
-    def to_dictionary(self):
+    def toDictionary(self):
         result = {'Order': self.Order, 'Tau': self.Tau, 'Radians': self.Radians, 'Sin': self.Sin,
                   'Cos': self.Cos, 'Tan': self.Tan, 'Sinh': self.Sinh, 'Cosh': self.Cosh,
                   'Tanh': self.Tanh}
@@ -98,7 +98,7 @@ class WaveData:
         return result
 
     @staticmethod
-    def from_json(content):
+    def fromJson(content):
         result = WaveData()
 
         if not content:

@@ -6,7 +6,7 @@ import traceback
 from ocs_sample_library_preview import (Asset, AssetType, MetadataItem, OCSClient, SdsType,
                                         SdsTypeCode, SdsTypeProperty, SdsStream, StatusEnum,
                                         StatusMapping, StreamReference, TypeReference,
-                                        ValueStatusMapping, WaveData)
+                                        ValueStatusMapping)
 
 from wave_data import WaveData
 
@@ -17,24 +17,24 @@ def get_wave_data_type(sample_type_id):
     if sample_type_id is None or not isinstance(sample_type_id, str):
         raise TypeError('sample_type_id is not an instantiated string')
 
-    int_type = SdsType('intType', sdsTypeCode=SdsTypeCode.Int32)
-    double_type = SdsType('doubleType', sdsTypeCode=SdsTypeCode.Double)
+    int_type = SdsType('intType', sds_type_code=SdsTypeCode.Int32)
+    double_type = SdsType('doubleType', sds_type_code=SdsTypeCode.Double)
 
     # WaveData uses Order as the key, or primary index
-    order_property = SdsTypeProperty('Order', isKey=True, sdsType=int_type)
-    tau_property = SdsTypeProperty('Tau', sdsType=double_type)
-    radians_property = SdsTypeProperty('Radians', sdsType=double_type)
-    sin_property = SdsTypeProperty('Sin', sdsType=double_type)
-    cos_property = SdsTypeProperty('Cos', sdsType=double_type)
-    tan_property = SdsTypeProperty('Tan', sdsType=double_type)
-    sinh_property = SdsTypeProperty('Sinh', sdsType=double_type)
-    cosh_property = SdsTypeProperty('Cosh', sdsType=double_type)
-    tanh_property = SdsTypeProperty('Tanh', sdsType=double_type)
+    order_property = SdsTypeProperty('Order', is_key=True, sds_type=int_type)
+    tau_property = SdsTypeProperty('Tau', sds_type=double_type)
+    radians_property = SdsTypeProperty('Radians', sds_type=double_type)
+    sin_property = SdsTypeProperty('Sin', sds_type=double_type)
+    cos_property = SdsTypeProperty('Cos', sds_type=double_type)
+    tan_property = SdsTypeProperty('Tan', sds_type=double_type)
+    sinh_property = SdsTypeProperty('Sinh', sds_type=double_type)
+    cosh_property = SdsTypeProperty('Cosh', sds_type=double_type)
+    tanh_property = SdsTypeProperty('Tanh', sds_type=double_type)
 
     # Create an SdsType for WaveData Class
     wave = SdsType(sample_type_id, 'WaveDataSample',
                    'This is a sample SDS type for storing WaveData type events',
-                   sdsTypeCode=SdsTypeCode.Object,
+                   SdsTypeCode.Object,
                    properties=[order_property, tau_property, radians_property,
                                sin_property, cos_property, tan_property,
                                sinh_property, cosh_property, tanh_property])
@@ -127,7 +127,7 @@ def main(test=False):
         # Step 3: Create an SDS stream
         print()
         print('Step 3: Creating an SdsStream...')
-        wave_stream = SdsStream(stream_id, stream_name, typeId=wave_type.Id)
+        wave_stream = SdsStream(stream_id, stream_name, type_id=wave_type.Id)
         wave_stream = ocs_client.Streams.getOrCreateStream(
             namespace_id, wave_stream)
 
@@ -136,7 +136,7 @@ def main(test=False):
         print('Step 4: Inserting data...')
         waves = []
         for event in range(0, 20, 2):
-            waves.append(next_wave(event, 2.0).to_dictionary())
+            waves.append(next_wave(event, 2.0).toDictionary())
         ocs_client.Streams.insertValues(
             namespace_id, wave_stream.Id, json.dumps(waves))
 
@@ -205,19 +205,19 @@ def main(test=False):
         print()
         print('Step 11: Getting the updated Asset...')
         asset = ocs_client.Assets.getAssetById(namespace_id, asset_id)
-        print(asset.to_json())
+        print(asset.toJson())
 
         # Step 12: Retrieve data from an asset
         print()
         print('Step 12: Getting last DataResults from an Asset...')
         data = ocs_client.Assets.getAssetLastData(namespace_id, asset_id)
-        print(data.to_json())
+        print(data.toJson())
 
         # Step 13: Retrieve status for an asset
         print()
         print('Step 13: Update last Status from an Asset...')
         status = ocs_client.Assets.getAssetStatus(namespace_id, asset_id)
-        print(status.to_json())
+        print(status.toJson())
 
         # Step 14: Search for an asset by asset type id
         print()
@@ -225,7 +225,7 @@ def main(test=False):
         assets = ocs_client.Assets.getAssets(
             namespace_id, f'AssetTypeId:{asset_type_id}')
         for value in assets:
-            print(value.to_json())
+            print(value.toJson())
 
     except Exception as error:
         print()
