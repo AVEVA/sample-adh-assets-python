@@ -1,6 +1,7 @@
 import configparser
 import json
 import math
+import time
 import traceback
 
 from ocs_sample_library_preview import (Asset, AssetType, MetadataItem, OCSClient, SdsType,
@@ -211,6 +212,7 @@ def main(test=False):
         # Step 13: Retrieve status for an asset
         print()
         print('Step 13: Update last Status from an Asset...')
+        time.sleep(1)
         status = ocs_client.Assets.getAssetStatus(namespace_id, asset_id)
         print(status.toJson())
 
