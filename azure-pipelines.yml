@@ -35,9 +35,16 @@ variables:
 
 jobs:
   - job: Tests
+    strategy:
+      maxParallel: 1 # Avoid conflicts in OCS
+      matrix:
+        linux:
+          agentOS: Linux
+        windows:
+          agentOS: Windows_NT
     pool:
       name: 00-OSIManaged-Containers
-      demands: Agent.OS -equals Linux
+      demands: Agent.OS -equals $(agentOS)
     steps:
       - template: '/miscellaneous/build_templates/config.yml@templates'
         parameters:
