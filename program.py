@@ -17,27 +17,25 @@ def get_wave_data_type(sample_type_id):
     if sample_type_id is None or not isinstance(sample_type_id, str):
         raise TypeError('sample_type_id is not an instantiated string')
 
-    int_type = SdsType('intType', sds_type_code=SdsTypeCode.Int32)
-    double_type = SdsType('doubleType', sds_type_code=SdsTypeCode.Double)
+    int_type = SdsType('intType', SdsTypeCode.Int32)
+    double_type = SdsType('doubleType', SdsTypeCode.Double)
 
     # WaveData uses Order as the key, or primary index
-    order_property = SdsTypeProperty('Order', is_key=True, sds_type=int_type)
-    tau_property = SdsTypeProperty('Tau', sds_type=double_type)
-    radians_property = SdsTypeProperty('Radians', sds_type=double_type)
-    sin_property = SdsTypeProperty('Sin', sds_type=double_type)
-    cos_property = SdsTypeProperty('Cos', sds_type=double_type)
-    tan_property = SdsTypeProperty('Tan', sds_type=double_type)
-    sinh_property = SdsTypeProperty('Sinh', sds_type=double_type)
-    cosh_property = SdsTypeProperty('Cosh', sds_type=double_type)
-    tanh_property = SdsTypeProperty('Tanh', sds_type=double_type)
+    order_property = SdsTypeProperty('Order', True, int_type)
+    tau_property = SdsTypeProperty('Tau', False, double_type)
+    radians_property = SdsTypeProperty('Radians', False, double_type)
+    sin_property = SdsTypeProperty('Sin', False, double_type)
+    cos_property = SdsTypeProperty('Cos', False, double_type)
+    tan_property = SdsTypeProperty('Tan', False, double_type)
+    sinh_property = SdsTypeProperty('Sinh', False, double_type)
+    cosh_property = SdsTypeProperty('Cosh', False, double_type)
+    tanh_property = SdsTypeProperty('Tanh', False, double_type)
 
     # Create an SdsType for WaveData Class
-    wave = SdsType(sample_type_id, 'WaveDataSample',
-                   'This is a sample SDS type for storing WaveData type events',
-                   SdsTypeCode.Object,
-                   properties=[order_property, tau_property, radians_property,
-                               sin_property, cos_property, tan_property,
-                               sinh_property, cosh_property, tanh_property])
+    wave = SdsType(sample_type_id, SdsTypeCode.Object,
+                   [order_property, tau_property, radians_property, sin_property, cos_property,
+                    tan_property, sinh_property, cosh_property, tanh_property], 'WaveDataSample',
+                   'This is a sample SDS type for storing WaveData type events')
 
     return wave
 
@@ -127,7 +125,7 @@ def main(test=False):
         # Step 3: Create an SDS stream
         print()
         print('Step 3: Creating an SdsStream...')
-        wave_stream = SdsStream(stream_id, stream_name, type_id=wave_type.Id)
+        wave_stream = SdsStream(stream_id, wave_type.Id, stream_name)
         wave_stream = ocs_client.Streams.getOrCreateStream(
             namespace_id, wave_stream)
 
@@ -153,8 +151,8 @@ def main(test=False):
         type_metadata = MetadataItem(type_metadata_id, type_metadata_name,
                                      'We are going to use this metadata to show inheritance',
                                      SdsTypeCode.Int64, type_metadata_uom)
-        type_reference = TypeReference(stream_reference_id, stream_reference_name,
-                                       type_id=wave_type.Id)
+        type_reference = TypeReference(
+            stream_reference_id, stream_reference_name, wave_type.Id)
         status_mapping = StatusMapping(type_reference.StreamReferenceId, 'Order', [
             ValueStatusMapping(0, StatusEnum.Warning),
             ValueStatusMapping(10, StatusEnum.Good),
@@ -168,12 +166,9 @@ def main(test=False):
         # Step 7: Create an asset from an asset type
         print()
         print('Step 7: Creating Asset with AssetType...')
-        stream_reference = StreamReference(stream_reference_id,
-                                           description='StreamReference on Asset',
-                                           stream_id=wave_stream.Id)
-        inherited_metadata = MetadataItem(
-            type_metadata_id,
-            description='Metadata Name, SdsTypeCode, and Uom inherited from AssetType')
+        stream_reference = StreamReference(
+            stream_reference_id, stream_id=wave_stream.Id)
+        inherited_metadata = MetadataItem(type_metadata_id)
         asset_metadata = MetadataItem(asset_metadata_id, asset_metadata_name,
                                       'Simple Metadata set on Asset', SdsTypeCode.Double,
                                       asset_metadata_uom)
