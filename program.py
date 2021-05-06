@@ -212,7 +212,7 @@ def main(test=False):
         # Step 13: Retrieve status for an asset
         print()
         print('Step 13: Update last Status from an Asset...')
-        time.sleep(20)
+        time.sleep(5)  # Give OCS a chance to catch up before requesting status
         status = ocs_client.Assets.getAssetStatus(namespace_id, asset_id)
         print(status.toJson())
 
