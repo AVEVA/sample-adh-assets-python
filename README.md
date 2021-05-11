@@ -9,12 +9,12 @@ Developed against Python 3.9.1.
 ## Requirements
 
 - Python 3
-- Register a Client-Credentials Client in your OSIsoft Cloud Services tenant and create a client secret to use in the configuration of this sample.
+- Register a [Client-Credentials Client](https://cloud.osisoft.com/clients) in your OSIsoft Cloud Services tenant and create a client secret to use in the configuration of this sample. ([Video Walkthrough](https://www.youtube.com/watch?v=JPWy0ZX9niU))
 - Install required modules: `pip install -r requirements.txt`
 
 ## About this sample
 
-This sample uses REST API calls to work with assets and asset types in OCS. It follows a set of steps to demonstrate the usage of various asset endpoints.
+This sample uses REST API calls to work with assets and asset types in OCS. It follows a set of steps to demonstrate the usage of various asset endpoints. The assets API reference documentation can be found [here](https://ocs-docs.osisoft.com/Content_Portal/Documentation/Assets/assets.html).
 
 1. Obtain an OAuth token for OCS, using a client-credentials client
 1. Create an SDS type
