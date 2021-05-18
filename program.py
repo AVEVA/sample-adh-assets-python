@@ -136,7 +136,7 @@ def main(test=False):
         waves = []
         for event in range(0, 20, 2):
             waves.append(next_wave(event, 2.0).toDictionary())
-        ocs_client.Streams.insertValues(
+        ocs_client.Streams.updateValues(
             namespace_id, wave_stream.Id, json.dumps(waves))
 
         # Step 5: Create an OCS asset
@@ -144,7 +144,7 @@ def main(test=False):
         print('Step 5: Creating simple Asset...')
         simple_asset = Asset(
             simple_asset_id, simple_asset_name, 'My First Asset!')
-        ocs_client.Assets.createAsset(namespace_id, simple_asset)
+        ocs_client.Assets.createOrUpdateAsset(namespace_id, simple_asset)
 
         # Step 6: Create an OCS asset type
         print()
@@ -161,7 +161,7 @@ def main(test=False):
         ])
         asset_type = AssetType(asset_type_id, asset_type_name, 'My first AssetType!', [
                                type_metadata], [type_reference], status_mapping)
-        asset_type = ocs_client.Assets.createAssetType(
+        asset_type = ocs_client.Assets.createOrUpdateAssetType(
             namespace_id, asset_type)
 
         # Step 7: Create an asset from an asset type
@@ -175,7 +175,7 @@ def main(test=False):
                                       asset_metadata_uom)
         asset = Asset(asset_id, asset_name, asset_type_id=asset_type.Id, metadata=[
                       inherited_metadata, asset_metadata], stream_references=[stream_reference])
-        asset = ocs_client.Assets.createAsset(namespace_id, asset)
+        asset = ocs_client.Assets.createOrUpdateAsset(namespace_id, asset)
 
         # Step 8: Retrieve an asset
         print()
