@@ -1,6 +1,6 @@
 # OSIsoft Cloud Services Assets Python Sample
 
-**Version:** 1.0.0
+**Version:** 1.0.1
 
 [![Build Status](https://dev.azure.com/osieng/engineering/_apis/build/status/product-readiness/OCS/osisoft.sample-ocs-assets-python?branchName=main)](https://dev.azure.com/osieng/engineering/_build/latest?definitionId=3402&branchName=main)
 
