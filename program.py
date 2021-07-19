@@ -7,7 +7,8 @@ import traceback
 from ocs_sample_library_preview import (Asset, AssetType, MetadataItem, OCSClient, SdsType,
                                         SdsTypeCode, SdsTypeProperty, SdsStream, StatusEnum,
                                         StatusMapping, StreamReference, TypeReference,
-                                        ValueStatusMapping)
+                                        ValueStatusMapping, StatusConfiguration,
+                                        StatusDefinitionType)
 
 from wave_data import WaveData
 
@@ -154,13 +155,15 @@ def main(test=False):
                                      SdsTypeCode.Int64, type_metadata_uom)
         type_reference = TypeReference(
             stream_reference_id, stream_reference_name, wave_type.Id)
-        status_mapping = StatusMapping(type_reference.StreamReferenceId, 'Order', [
-            ValueStatusMapping(0, StatusEnum.Warning),
-            ValueStatusMapping(10, StatusEnum.Good),
-            ValueStatusMapping(18, StatusEnum.Bad)
-        ])
+        status_configuration = StatusConfiguration(
+            StatusDefinitionType.StreamPropertyMapping,
+            StatusMapping(type_reference.StreamReferenceId, 'Order', [
+                ValueStatusMapping(0, StatusEnum.Warning),
+                ValueStatusMapping(10, StatusEnum.Good),
+                ValueStatusMapping(18, StatusEnum.Bad)
+            ]))
         asset_type = AssetType(asset_type_id, asset_type_name, 'My first AssetType!', [
-                               type_metadata], [type_reference], status_mapping)
+                               type_metadata], [type_reference], status_configuration)
         asset_type = ocs_client.Assets.createOrUpdateAssetType(
             namespace_id, asset_type)
 
