@@ -1,4 +1,3 @@
-import configparser
 import json
 import math
 import time
@@ -11,6 +10,23 @@ from ocs_sample_library_preview import (Asset, AssetType, MetadataItem, OCSClien
                                         StatusDefinitionType)
 
 from wave_data import WaveData
+
+def get_appsettings():
+    """Open and parse the appsettings.json file"""
+
+    # Try to open the configuration file
+    try:
+        with open(
+            'appsettings.json',
+            'r',
+        ) as f:
+            appsettings = json.load(f)
+    except Exception as error:
+        print(f'Error: {str(error)}')
+        print(f'Could not open/read appsettings.json')
+        exit()
+
+    return appsettings
 
 
 def get_wave_data_type(sample_type_id):
@@ -91,15 +107,14 @@ def main(test=False):
     asset_metadata_uom = 'mV'
 
     try:
-        config = configparser.ConfigParser()
-        config.read('config.ini')
+        appsettings = get_appsettings()
 
-        resource = config.get('Configuration', 'Resource')
-        api_version = config.get('Configuration', 'ApiVersion')
-        tenant_id = config.get('Configuration', 'TenantId')
-        namespace_id = config.get('Configuration', 'NamespaceId')
-        client_id = config.get('Configuration', 'ClientId')
-        client_secret = config.get('Configuration', 'ClientSecret')
+        resource = appsettings.get('Resource')
+        api_version = appsettings.get('ApiVersion')
+        tenant_id = appsettings.get('TenantId')
+        namespace_id = appsettings.get('NamespaceId')
+        client_id = appsettings.get('ClientId')
+        client_secret = appsettings.get('ClientSecret')
 
         print(r'-----------------------------------')
         print(r'   ___                   _         ')
