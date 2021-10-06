@@ -179,7 +179,7 @@ def main(test=False):
             ]))
         asset_type = AssetType(asset_type_id, asset_type_name, 'My first AssetType!', [
                                type_metadata], [type_reference], status_configuration)
-        asset_type = ocs_client.Assets.createOrUpdateAssetType(
+        asset_type = ocs_client.AssetTypes.createOrUpdateAssetType(
             namespace_id, asset_type)
 
         # Step 7: Create an asset from an asset type
@@ -257,7 +257,7 @@ def main(test=False):
         suppress_error(lambda: ocs_client.Assets.deleteAsset(
             namespace_id, asset_id))
         print('Deleting AssetType...')
-        suppress_error(lambda: ocs_client.Assets.deleteAssetType(
+        suppress_error(lambda: ocs_client.AssetTypes.deleteAssetType(
             namespace_id, asset_type_id))
         print('Deleting simple Asset...')
         suppress_error(lambda: ocs_client.Assets.deleteAsset(
