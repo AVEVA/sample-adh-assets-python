@@ -164,7 +164,7 @@ def main(test=False):
             ]))
         asset_type = AssetType(asset_type_id, asset_type_name, 'My first AssetType!', [
                                type_metadata], [type_reference], status_configuration)
-        asset_type = ocs_client.Assets.createOrUpdateAssetType(
+        asset_type = ocs_client.AssetTypes.createOrUpdateAssetType(
             namespace_id, asset_type)
 
         # Step 7: Create an asset from an asset type
