@@ -1,4 +1,3 @@
-import configparser
 import json
 import math
 import time
@@ -11,6 +10,23 @@ from ocs_sample_library_preview import (Asset, AssetType, MetadataItem, OCSClien
                                         StatusDefinitionType)
 
 from wave_data import WaveData
+
+def get_appsettings():
+    """Open and parse the appsettings.json file"""
+
+    # Try to open the configuration file
+    try:
+        with open(
+            'appsettings.json',
+            'r',
+        ) as f:
+            appsettings = json.load(f)
+    except Exception as error:
+        print(f'Error: {str(error)}')
+        print(f'Could not open/read appsettings.json')
+        exit()
+
+    return appsettings
 
 
 def get_wave_data_type(sample_type_id):
@@ -91,15 +107,14 @@ def main(test=False):
     asset_metadata_uom = 'mV'
 
     try:
-        config = configparser.ConfigParser()
-        config.read('config.ini')
+        appsettings = get_appsettings()
 
-        resource = config.get('Configuration', 'Resource')
-        api_version = config.get('Configuration', 'ApiVersion')
-        tenant_id = config.get('Configuration', 'TenantId')
-        namespace_id = config.get('Configuration', 'NamespaceId')
-        client_id = config.get('Configuration', 'ClientId')
-        client_secret = config.get('Configuration', 'ClientSecret')
+        resource = appsettings.get('Resource')
+        api_version = appsettings.get('ApiVersion')
+        tenant_id = appsettings.get('TenantId')
+        namespace_id = appsettings.get('NamespaceId')
+        client_id = appsettings.get('ClientId')
+        client_secret = appsettings.get('ClientSecret')
 
         print(r'-----------------------------------')
         print(r'   ___                   _         ')
@@ -164,7 +179,7 @@ def main(test=False):
             ]))
         asset_type = AssetType(asset_type_id, asset_type_name, 'My first AssetType!', [
                                type_metadata], [type_reference], status_configuration)
-        asset_type = ocs_client.Assets.createOrUpdateAssetType(
+        asset_type = ocs_client.AssetTypes.createOrUpdateAssetType(
             namespace_id, asset_type)
 
         # Step 7: Create an asset from an asset type
@@ -242,7 +257,7 @@ def main(test=False):
         suppress_error(lambda: ocs_client.Assets.deleteAsset(
             namespace_id, asset_id))
         print('Deleting AssetType...')
-        suppress_error(lambda: ocs_client.Assets.deleteAssetType(
+        suppress_error(lambda: ocs_client.AssetTypes.deleteAssetType(
             namespace_id, asset_type_id))
         print('Deleting simple Asset...')
         suppress_error(lambda: ocs_client.Assets.deleteAsset(

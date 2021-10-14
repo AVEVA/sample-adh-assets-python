@@ -26,10 +26,6 @@ resources:
 
 variables:
   - template: '/miscellaneous/build_templates/variables.yml@templates'
-  - name: CredFile
-    value: config.ini
-  - name: CredFileLibrary
-    value: product-readiness.assets_python.ini
   - name: analysisProject
     value: Assets_Python
 
@@ -46,10 +42,9 @@ jobs:
       name: 00-OSIManaged-Containers
       demands: Agent.OS -equals $(agentOS)
     steps:
-      - template: '/miscellaneous/build_templates/config.yml@templates'
+      - template: '/miscellaneous/build_templates/appsettings.yml@templates'
         parameters:
-          fileOriginal: $(CredFile)
-          fileLibrary: $(CredFileLibrary)
+          secrets: 'TenantId, NamespaceId, ClientId, ClientSecret'
 
       - script: |
           echo Install test tools   
