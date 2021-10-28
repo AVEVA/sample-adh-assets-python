@@ -1,6 +1,6 @@
 # OSIsoft Cloud Services Assets Python Sample
 
-**Version:** 1.0.4
+**Version:** 1.0.5
 
 [![Build Status](https://dev.azure.com/osieng/engineering/_apis/build/status/product-readiness/OCS/osisoft.sample-ocs-assets-python?branchName=main)](https://dev.azure.com/osieng/engineering/_build/latest?definitionId=3402&branchName=main)
 
@@ -68,7 +68,7 @@ python -m pytest test.py
 
 ---
 
-Tested against Python 3.9.1
-
+Tested against Python 3.9.1  
+For the OCS Assets samples page [ReadMe](https://github.com/osisoft/OSI-Samples-OCS/blob/main/docs/ASSETS.md)  
 For the main OCS samples page [ReadMe](https://github.com/osisoft/OSI-Samples-OCS)  
 For the main OSIsoft samples page [ReadMe](https://github.com/osisoft/OSI-Samples)
