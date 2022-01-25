@@ -3,7 +3,7 @@ import math
 import time
 import traceback
 
-from ocs_sample_library_preview import (Asset, AssetType, MetadataItem, OCSClient, SdsType,
+from ocs_sample_library_preview import (Asset, AssetType, MetadataItem, ADHClient, SdsType,
                                         SdsTypeCode, SdsTypeProperty, SdsStream, StatusEnum,
                                         StatusMapping, StreamReference, TypeReference,
                                         ValueStatusMapping, StatusConfiguration,
@@ -127,23 +127,23 @@ def main(test=False):
         print()
         print(f'SDS endpoint at {resource}')
 
-        # Step 1: Obtain an OAuth token for OCS, using a client-credentials client
+        # Step 1: Obtain an OAuth token for ADH, using a client-credentials client
         print()
-        print('Step 1: Setting up OCSClient for authentication and requests...')
-        ocs_client = OCSClient(api_version, tenant_id,
+        print('Step 1: Setting up ADHClient for authentication and requests...')
+        adh_client = ADHClient(api_version, tenant_id,
                                resource, client_id, client_secret)
 
         # Step 2: Create an SDS type
         print()
         print('Step 2: Creating an SdsType...')
         wave_type = get_wave_data_type(type_id)
-        wave_type = ocs_client.Types.getOrCreateType(namespace_id, wave_type)
+        wave_type = adh_client.Types.getOrCreateType(namespace_id, wave_type)
 
         # Step 3: Create an SDS stream
         print()
         print('Step 3: Creating an SdsStream...')
         wave_stream = SdsStream(stream_id, wave_type.Id, stream_name)
-        wave_stream = ocs_client.Streams.getOrCreateStream(
+        wave_stream = adh_client.Streams.getOrCreateStream(
             namespace_id, wave_stream)
 
         # Step 4: Insert data into the stream
@@ -152,17 +152,17 @@ def main(test=False):
         waves = []
         for event in range(0, 20, 2):
             waves.append(next_wave(event, 2.0).toDictionary())
-        ocs_client.Streams.updateValues(
+        adh_client.Streams.updateValues(
             namespace_id, wave_stream.Id, json.dumps(waves))
 
-        # Step 5: Create an OCS asset
+        # Step 5: Create an ADH asset
         print()
         print('Step 5: Creating simple Asset...')
         simple_asset = Asset(
             simple_asset_id, simple_asset_name, 'My First Asset!')
-        ocs_client.Assets.createOrUpdateAsset(namespace_id, simple_asset)
+        adh_client.Assets.createOrUpdateAsset(namespace_id, simple_asset)
 
-        # Step 6: Create an OCS asset type
+        # Step 6: Create an ADH asset type
         print()
         print('Step 6: Creating AssetType...')
         type_metadata = MetadataItem(type_metadata_id, type_metadata_name,
@@ -179,7 +179,7 @@ def main(test=False):
             ]))
         asset_type = AssetType(asset_type_id, asset_type_name, 'My first AssetType!', [
                                type_metadata], [type_reference], status_configuration)
-        asset_type = ocs_client.AssetTypes.createOrUpdateAssetType(
+        asset_type = adh_client.AssetTypes.createOrUpdateAssetType(
             namespace_id, asset_type)
 
         # Step 7: Create an asset from an asset type
@@ -193,18 +193,18 @@ def main(test=False):
                                       asset_metadata_uom)
         asset = Asset(asset_id, asset_name, asset_type_id=asset_type.Id, metadata=[
                       inherited_metadata, asset_metadata], stream_references=[stream_reference])
-        asset = ocs_client.Assets.createOrUpdateAsset(namespace_id, asset)
+        asset = adh_client.Assets.createOrUpdateAsset(namespace_id, asset)
 
         # Step 8: Retrieve an asset
         print()
         print('Step 8: Getting an Asset...')
-        asset = ocs_client.Assets.getAssetById(namespace_id, asset_id)
+        asset = adh_client.Assets.getAssetById(namespace_id, asset_id)
         print(f'Returned Asset has Id {asset.Id} and Name {asset.Name}')
 
         # Step 9: Retrieve a resolved asset
         print()
         print('Step 9: Getting a ResolvedAsset...')
-        asset = ocs_client.Assets.getResolvedAsset(namespace_id, asset_id)
+        asset = adh_client.Assets.getResolvedAsset(namespace_id, asset_id)
         print('Asset null values are overridden by its AssetType, if any, when resolved. ' +
               f'ResolvedAsset Description: {asset.Description}')
 
@@ -213,31 +213,31 @@ def main(test=False):
         print('Step 10: Updating an Asset Description...')
         asset = Asset(asset_id, asset_name, 'My first Asset with AssetType!', asset_type.Id, [
             inherited_metadata, asset_metadata], [stream_reference])
-        asset = ocs_client.Assets.createOrUpdateAsset(namespace_id, asset)
+        asset = adh_client.Assets.createOrUpdateAsset(namespace_id, asset)
 
         # Step 11: Retrieve the updated asset
         print()
         print('Step 11: Getting the updated Asset...')
-        asset = ocs_client.Assets.getAssetById(namespace_id, asset_id)
+        asset = adh_client.Assets.getAssetById(namespace_id, asset_id)
         print(asset.toJson())
 
         # Step 12: Retrieve data from an asset
         print()
         print('Step 12: Getting last DataResults from an Asset...')
-        data = ocs_client.Assets.getAssetLastData(namespace_id, asset_id)
+        data = adh_client.Assets.getAssetLastData(namespace_id, asset_id)
         print(data.toJson())
 
         # Step 13: Retrieve status for an asset
         print()
         print('Step 13: Update last Status from an Asset...')
-        time.sleep(5)  # Give OCS a chance to catch up before requesting status
-        status = ocs_client.Assets.getAssetStatus(namespace_id, asset_id)
+        time.sleep(5)  # Give ADH a chance to catch up before requesting status
+        status = adh_client.Assets.getAssetStatus(namespace_id, asset_id)
         print(status.toJson())
 
         # Step 14: Search for an asset by asset type id
         print()
         print('Step 14: Searching for an Asset by AssetTypeId...')
-        assets = ocs_client.Assets.getAssets(
+        assets = adh_client.Assets.getAssets(
             namespace_id, f'AssetTypeId:{asset_type_id}')
         for value in assets:
             print(value.toJson())
@@ -254,19 +254,19 @@ def main(test=False):
         print()
         print('Step 15: Cleaning up...')
         print('Deleting Asset...')
-        suppress_error(lambda: ocs_client.Assets.deleteAsset(
+        suppress_error(lambda: adh_client.Assets.deleteAsset(
             namespace_id, asset_id))
         print('Deleting AssetType...')
-        suppress_error(lambda: ocs_client.AssetTypes.deleteAssetType(
+        suppress_error(lambda: adh_client.AssetTypes.deleteAssetType(
             namespace_id, asset_type_id))
         print('Deleting simple Asset...')
-        suppress_error(lambda: ocs_client.Assets.deleteAsset(
+        suppress_error(lambda: adh_client.Assets.deleteAsset(
             namespace_id, simple_asset_id))
         print('Deleting SdsStream...')
-        suppress_error(lambda: ocs_client.Streams.deleteStream(
+        suppress_error(lambda: adh_client.Streams.deleteStream(
             namespace_id, stream_id))
         print('Deleting SdsType...')
-        suppress_error(lambda: ocs_client.Types.deleteType(
+        suppress_error(lambda: adh_client.Types.deleteType(
             namespace_id, type_id))
 
         if test and exception is not None:
