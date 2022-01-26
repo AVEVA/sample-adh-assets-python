@@ -5,14 +5,14 @@
 
 **Version:** 1.1.0
 
-[![Build Status](https://dev.azure.com/osieng/engineering/_apis/build/status/product-readiness/OCS/osisoft.sample-ocs-assets-python?branchName=main)](https://dev.azure.com/osieng/engineering/_build/latest?definitionId=3402&branchName=main)
+[![Build Status](https://dev.azure.com/osieng/engineering/_apis/build/status/product-readiness/ADH/aveva.sample-adh-assets-python?branchName=main)](https://dev.azure.com/osieng/engineering/_build/latest?definitionId=3402&branchName=main)
 
 Developed against Python 3.9.1.
 
 ## Requirements
 
 - Python 3.9+
-- Register a [Client-Credentials Client](https://cloud.osisoft.com/clients) in your AVEVA Data Hub tenant and create a client secret to use in the configuration of this sample. ([Video Walkthrough](https://www.youtube.com/watch?v=JPWy0ZX9niU))
+- Register a [Client-Credentials Client](https://datahub.connect.aveva.com/clients) in your AVEVA Data Hub tenant and create a client secret to use in the configuration of this sample. ([Video Walkthrough](https://www.youtube.com/watch?v=JPWy0ZX9niU))
 - Install required modules: `pip install -r requirements.txt`
 
 ## About this sample
