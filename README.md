@@ -11,7 +11,7 @@ Developed against Python 3.9.1.
 
 ## Requirements
 
-- Python 3.9+
+- Python 3.7+
 - Register a [Client-Credentials Client](https://datahub.connect.aveva.com/clients) in your AVEVA Data Hub tenant and create a client secret to use in the configuration of this sample. ([Video Walkthrough](https://www.youtube.com/watch?v=JPWy0ZX9niU))
 - Install required modules: `pip install -r requirements.txt`
 
