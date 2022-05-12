@@ -3,7 +3,7 @@ import math
 import time
 import traceback
 
-from ocs_sample_library_preview import (Asset, AssetType, MetadataItem, ADHClient, SdsType,
+from adh_sample_library_preview import (Asset, AssetType, MetadataItem, ADHClient, SdsType,
                                         SdsTypeCode, SdsTypeProperty, SdsStream, StatusEnum,
                                         StatusMapping, StreamReference, TypeReference,
                                         ValueStatusMapping, StatusConfiguration,
