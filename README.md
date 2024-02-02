@@ -1,6 +1,6 @@
 # AVEVA Data Hub Assets Python Sample
 
-**Version:** 1.1.5
+**Version:** 1.1.6
 
 [![Build Status](https://dev.azure.com/osieng/engineering/_apis/build/status/product-readiness/ADH/aveva.sample-adh-assets-python?branchName=main)](https://dev.azure.com/osieng/engineering/_build/latest?definitionId=3402&branchName=main)
 
