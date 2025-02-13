@@ -27,7 +27,8 @@ resources:
       type: github
       name: AVEVA/AVEVA-Samples
       endpoint: AVEVA
-
+      ref: refs/heads/BlackDuckCoverity
+    
 variables:
   - name: analysisProject
     value: Assets_Python
